@@ -12,7 +12,7 @@ function App() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [editId, setEditId] = useState<number | null>(null);
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
         if (editId !== null) {
             const updatedContacts = contacts.map(function(item) {
