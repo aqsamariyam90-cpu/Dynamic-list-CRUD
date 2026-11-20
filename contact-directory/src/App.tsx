@@ -12,7 +12,9 @@ function App() {
     const [phone, setPhone] = useState("");
     const [email, setEmail] = useState("");
     const [editId, setEditId] = useState<number | null>(null);
-    function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    const [search, setSearch] = useState("");
+    const [sortOrder, setSortOrder] = useState("A-Z");
+function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault();
         if (editId !== null) {
             const updatedContacts = contacts.map(function(item) {
@@ -53,6 +55,21 @@ function App() {
         });
         setContacts(updatedContacts);
     }
+    // Search contacts by name or phone number
+    const filteredContacts = contacts.filter(function(item) {
+        return (
+            item.name.toLowerCase().includes(search.toLowerCase()) ||
+            item.phone.includes(search)
+        );
+    });
+    // Sort contacts by name
+    const sortedContacts = [...filteredContacts].sort(function(a, b) {
+        if (sortOrder === "A-Z") {
+            return a.name.localeCompare(b.name);
+        } else {
+            return b.name.localeCompare(a.name);
+        }
+    });
     return (
         <div className="container">
             <h1>Contact Directory</h1>
@@ -106,20 +123,49 @@ function App() {
                     )}
                 </form>
             </div>
+            {/* Search and Sorting */}
+            <div className="search-section">
+                <input
+                    type="text"
+                    placeholder="Search by name or phone number"
+                    value={search}
+                    onChange={function(e) {
+                        setSearch(e.target.value);
+                    }}
+                />
+                <select
+                    value={sortOrder}
+                    onChange={function(e) {
+                        setSortOrder(e.target.value);
+                    }}
+                >
+                    <option value="A-Z">Name (A-Z)</option>
+                    <option value="Z-A">Name (Z-A)</option>
+                </select>
+            </div>
             <h2 className="list-heading">
                 My Contacts ({contacts.length})
             </h2>
             <div className="contact-list">
                 {contacts.length === 0 ? (
-                    <p className="empty-message">No contacts added yet.</p>
-
+                    <p className="empty-message">
+                        No contacts added yet.
+                    </p>
+                ) : sortedContacts.length === 0 ? (
+                    <p className="empty-message">
+                        No matching contacts.
+                    </p>
                 ) : (
-                    contacts.map(function(item) {
+                    sortedContacts.map(function(item) {
                         return (
                             <div className="contact-card" key={item.id}>
                                 <h3>{item.name}</h3>
-                                <p><strong>Phone:</strong> {item.phone}</p>
-                                <p><strong>Email:</strong> {item.email}</p>
+                                <p>
+                                    <strong>Phone:</strong> {item.phone}
+                                </p>
+                                <p>
+                                    <strong>Email:</strong> {item.email}
+                                </p>
                                 <div className="card-buttons">
                                     <button
                                         className="edit-btn"

@@ -93,3 +93,32 @@ button {
     text-align: center;
     padding: 20px;
 }
+.search-section {
+    display: flex;
+    gap: 10px;
+    margin: 25px 0;
+}
+.search-section input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+}
+.search-section select {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    background-color: white;
+}
+.empty-message {
+    text-align: center;
+    color: #777;
+    padding: 20px;
+}
+@media (max-width: 600px) {
+    .search-section {
+        flex-direction: column;
+    }
+}
